@@ -21,11 +21,9 @@ import {
   clampShellPanelWidth,
   clampTxFileLineDelayMs,
   loadAppSettings,
-  normalizeAppTitle,
   persistFromStore,
 } from '../utils/appSettings'
 import { clampSamples } from '../utils/plotterSettings'
-import type { AppIconPresetId } from '../config/appBranding'
 import { clampTextZoom } from '../utils/textZoom'
 
 const savedSettings = loadAppSettings()
@@ -94,9 +92,6 @@ interface SerialStore {
   waveformStats: WaveformStats | null
   plotterSettings: PlotterSettings
   textZoom: number
-  appIconPreset: AppIconPresetId
-  appIconCustom: string | null
-  appTitle: string
   txFileLineDelayMs: number
   shellPanelWidth: number
   shellPanelHeight: number
@@ -137,7 +132,6 @@ interface SerialStore {
   clearWaveform: () => void
   setPlotterSettings: (settings: PlotterSettings) => void
   setTextZoom: (zoom: number) => void
-  setAppBranding: (title: string, preset: AppIconPresetId, custom: string | null) => void
   resetMetrics: () => void
 }
 
@@ -180,9 +174,6 @@ export const useSerialStore = create<SerialStore>((set, get) => ({
   waveformStats: null,
   plotterSettings: savedSettings.plotter,
   textZoom: savedSettings.textZoom,
-  appIconPreset: savedSettings.appIconPreset,
-  appIconCustom: savedSettings.appIconCustom,
-  appTitle: savedSettings.appTitle,
   txFileLineDelayMs: savedSettings.txFileLineDelayMs,
   shellPanelWidth: savedSettings.shellPanelWidth,
   shellPanelHeight: savedSettings.shellPanelHeight,
@@ -270,14 +261,6 @@ export const useSerialStore = create<SerialStore>((set, get) => ({
   },
   setTextZoom: (textZoom) => {
     set({ textZoom: clampTextZoom(textZoom) })
-    persistFromStore(get())
-  },
-  setAppBranding: (appTitle, appIconPreset, appIconCustom) => {
-    set({
-      appTitle: normalizeAppTitle(appTitle),
-      appIconPreset,
-      appIconCustom,
-    })
     persistFromStore(get())
   },
   setPlotterSettings: (settings) => {

@@ -17,7 +17,7 @@ export interface AboutField {
 export const aboutMeta = {
   appName: 'Mukagen',
   version: '1.0.0',
-  tagline: 'Web Serial diagnostics for embedded devices',
+  tagline: 'Modern Web-Based Serial Diagnostics Tool for Embedded Devices',
 }
 
 /** Customize creator, links, license, etc. */

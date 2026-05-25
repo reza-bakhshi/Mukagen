@@ -1,9 +1,3 @@
-import {
-  DEFAULT_APP_ICON_PRESET,
-  DEFAULT_APP_TITLE,
-  APP_TITLE_MAX_LENGTH,
-  type AppIconPresetId,
-} from '../config/appBranding'
 import type { PlotterSettings, ThemeMode, WaveformValueType } from '../types/serial'
 import {
   PLOTTER_SAMPLES_DEFAULT,
@@ -25,9 +19,6 @@ export interface AppSettingsFile {
   waveformValueType: WaveformValueType
   textZoom: number
   plotter: PlotterSettings
-  appIconPreset: AppIconPresetId
-  appIconCustom: string | null
-  appTitle: string
   txFileLineDelayMs: number
   shellPanelWidth: number
   shellPanelHeight: number
@@ -68,36 +59,9 @@ export const defaultAppSettings: AppSettingsFile = {
   waveformValueType: 'float',
   textZoom: TEXT_ZOOM_DEFAULT,
   plotter: defaultPlotterSettings,
-  appIconPreset: DEFAULT_APP_ICON_PRESET,
-  appIconCustom: null,
-  appTitle: DEFAULT_APP_TITLE,
   txFileLineDelayMs: TX_FILE_LINE_DELAY_DEFAULT,
   shellPanelWidth: 0,
   shellPanelHeight: 0,
-}
-
-const APP_ICON_PRESET_IDS: AppIconPresetId[] = [
-  'terminal',
-  'monitor',
-  'cpu',
-  'usb',
-  'radio',
-  'activity',
-  'cable',
-]
-
-export function normalizeAppTitle(title: unknown): string {
-  if (typeof title !== 'string') return DEFAULT_APP_TITLE
-  const trimmed = title.trim()
-  if (!trimmed) return DEFAULT_APP_TITLE
-  return trimmed.slice(0, APP_TITLE_MAX_LENGTH)
-}
-
-function normalizeAppIconPreset(id: unknown): AppIconPresetId {
-  if (typeof id === 'string' && APP_ICON_PRESET_IDS.includes(id as AppIconPresetId)) {
-    return id as AppIconPresetId
-  }
-  return DEFAULT_APP_ICON_PRESET
 }
 
 function clampBufferMax(n: number) {
@@ -154,12 +118,6 @@ export function loadAppSettings(): AppSettingsFile {
           parsed.waveformValueType === 'int' ? 'int' : 'float',
         textZoom: clampTextZoom(parsed.textZoom ?? defaultAppSettings.textZoom),
         plotter: normalizePlotter(parsed.plotter),
-        appIconPreset: normalizeAppIconPreset(parsed.appIconPreset),
-        appIconCustom:
-          typeof parsed.appIconCustom === 'string' && parsed.appIconCustom.length > 0
-            ? parsed.appIconCustom
-            : null,
-        appTitle: normalizeAppTitle(parsed.appTitle),
         txFileLineDelayMs: clampTxFileLineDelayMs(
           parsed.txFileLineDelayMs ?? defaultAppSettings.txFileLineDelayMs,
         ),
@@ -207,12 +165,6 @@ export function patchAppSettings(patch: Partial<AppSettingsFile>) {
     waveformValueType: patch.waveformValueType ?? current.waveformValueType,
     textZoom: patch.textZoom != null ? clampTextZoom(patch.textZoom) : current.textZoom,
     plotter: patch.plotter ? normalizePlotter(patch.plotter) : current.plotter,
-    appIconPreset:
-      patch.appIconPreset != null
-        ? normalizeAppIconPreset(patch.appIconPreset)
-        : current.appIconPreset,
-    appIconCustom: patch.appIconCustom !== undefined ? patch.appIconCustom : current.appIconCustom,
-    appTitle: patch.appTitle != null ? normalizeAppTitle(patch.appTitle) : current.appTitle,
     txFileLineDelayMs:
       patch.txFileLineDelayMs != null
         ? clampTxFileLineDelayMs(patch.txFileLineDelayMs)
@@ -236,9 +188,6 @@ export function persistFromStore(state: {
   waveformValueType: WaveformValueType
   textZoom: number
   plotterSettings: PlotterSettings
-  appIconPreset: AppIconPresetId
-  appIconCustom: string | null
-  appTitle: string
   txFileLineDelayMs: number
   shellPanelWidth: number
   shellPanelHeight: number
@@ -250,9 +199,6 @@ export function persistFromStore(state: {
     waveformValueType: state.waveformValueType,
     textZoom: clampTextZoom(state.textZoom),
     plotter: normalizePlotter(state.plotterSettings),
-    appIconPreset: normalizeAppIconPreset(state.appIconPreset),
-    appIconCustom: state.appIconCustom,
-    appTitle: normalizeAppTitle(state.appTitle),
     txFileLineDelayMs: clampTxFileLineDelayMs(state.txFileLineDelayMs),
     shellPanelWidth: clampShellPanelWidth(state.shellPanelWidth),
     shellPanelHeight: clampShellPanelHeight(state.shellPanelHeight),

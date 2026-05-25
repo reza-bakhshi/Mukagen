@@ -1,10 +1,9 @@
-import { Cable, Moon, Sun, Unplug } from 'lucide-react'
-import { AppBrandIcon } from '../components/AppBrandIcon'
+import { Cable, Moon, Sun, Terminal, Unplug } from 'lucide-react'
 import { useSerialStore } from '../store/serialStore'
 import type { ThemeMode } from '../types/serial'
 
 export function WorkbenchHeader() {
-  const { status, theme, setTheme, appTitle, appIconPreset, appIconCustom } = useSerialStore()
+  const { status, theme, setTheme } = useSerialStore()
   const connected = status === 'connected'
 
   return (
@@ -13,8 +12,8 @@ export function WorkbenchHeader() {
       style={{ borderColor: 'var(--app-divider)' }}
     >
       <h1 className="flex items-center gap-2 text-base font-semibold">
-        <AppBrandIcon preset={appIconPreset} customUrl={appIconCustom} size={20} />
-        {appTitle}
+        <Terminal size={20} style={{ color: 'var(--app-accent)' }} />
+        Mukagen
       </h1>
 
       <div className="flex items-center gap-2">
