@@ -8,7 +8,11 @@ const usePolling =
   process.env.VITE_USE_POLLING === '1' ||
   (process.env.VITE_USE_POLLING !== '0' && os.platform() === 'linux')
 
+const repoName = process.env.GITHUB_REPOSITORY?.split('/')?.[1]
+const base = repoName ? `/${repoName}/` : '/'
+
 export default defineConfig({
+  base,
   plugins: [react(), tailwindcss()],
   server: {
     watch: usePolling
