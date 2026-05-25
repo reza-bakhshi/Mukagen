@@ -21,7 +21,7 @@ export type LineEnding = 'lf' | 'cr' | 'crlf'
 
 export type ThemeMode = 'light' | 'dark'
 
-export type WaveformValueType = 'float' | 'int'
+export type WaveformValueType = 'double'
 
 export type CaptureDirection = 'rx' | 'tx'
 

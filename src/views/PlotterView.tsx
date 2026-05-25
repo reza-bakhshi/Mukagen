@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { LineChart, Play, Settings2, Square, Trash2 } from 'lucide-react'
 import { PlotterSettingsPanel } from '../components/PlotterSettingsPanel'
-import { SegmentedControl } from '../components/SegmentedControl'
+// SegmentedControl removed: plotter now uses single double precision mode
 import { WaveformPlot } from '../components/TelemetryChart'
 import { useSerialStore } from '../store/serialStore'
 
@@ -9,9 +9,7 @@ export function PlotterView() {
   const [settingsOpen, setSettingsOpen] = useState(true)
   const {
     waveformCapturing,
-    waveformValueType,
     setWaveformCapturing,
-    setWaveformValueType,
     clearWaveform,
     status,
     pushAlert,
@@ -27,16 +25,6 @@ export function PlotterView() {
             <LineChart size={14} style={{ color: 'var(--app-accent)' }} />
             Plotter
           </span>
-
-          <SegmentedControl
-            value={waveformValueType}
-            options={[
-              { value: 'float', label: 'Float' },
-              { value: 'int', label: 'Int' },
-            ]}
-            onChange={setWaveformValueType}
-            disabled={waveformCapturing}
-          />
 
           {!waveformCapturing ? (
             <button

@@ -127,7 +127,6 @@ interface SerialStore {
   pushTxHistory: (cmd: string) => void
   setTxPendingFile: (file: { name: string; lines: string[] } | null) => void
   setWaveformCapturing: (v: boolean) => void
-  setWaveformValueType: (t: WaveformValueType) => void
   pushWaveformValue: (value: number) => void
   clearWaveform: () => void
   setPlotterSettings: (settings: PlotterSettings) => void
@@ -169,7 +168,7 @@ export const useSerialStore = create<SerialStore>((set, get) => ({
   txHistory: [],
   txPendingFile: null,
   waveformCapturing: false,
-  waveformValueType: savedSettings.waveformValueType,
+  waveformValueType: 'double',
   waveformPoints: [],
   waveformStats: null,
   plotterSettings: savedSettings.plotter,
@@ -243,10 +242,6 @@ export const useSerialStore = create<SerialStore>((set, get) => ({
     })),
   setTxPendingFile: (txPendingFile) => set({ txPendingFile }),
   setWaveformCapturing: (waveformCapturing) => set({ waveformCapturing }),
-  setWaveformValueType: (waveformValueType) => {
-    set({ waveformValueType })
-    persistFromStore(get())
-  },
   pushWaveformValue: (value) => {
     const max = get().plotterSettings.maxSamples
     const points = get().waveformPoints

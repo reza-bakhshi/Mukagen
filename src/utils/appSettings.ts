@@ -1,4 +1,4 @@
-import type { PlotterSettings, ThemeMode, WaveformValueType } from '../types/serial'
+import type { PlotterSettings, ThemeMode } from '../types/serial'
 import {
   PLOTTER_SAMPLES_DEFAULT,
   clampSamples,
@@ -16,7 +16,6 @@ export interface AppSettingsFile {
   version: typeof APP_SETTINGS_VERSION
   theme: ThemeMode
   captureBufferMax: number
-  waveformValueType: WaveformValueType
   textZoom: number
   plotter: PlotterSettings
   txFileLineDelayMs: number
@@ -56,7 +55,6 @@ export const defaultAppSettings: AppSettingsFile = {
   version: APP_SETTINGS_VERSION,
   theme: 'dark',
   captureBufferMax: BUFFER_DEFAULT,
-  waveformValueType: 'float',
   textZoom: TEXT_ZOOM_DEFAULT,
   plotter: defaultPlotterSettings,
   txFileLineDelayMs: TX_FILE_LINE_DELAY_DEFAULT,
@@ -114,8 +112,6 @@ export function loadAppSettings(): AppSettingsFile {
         captureBufferMax: clampBufferMax(
           parsed.captureBufferMax ?? defaultAppSettings.captureBufferMax,
         ),
-        waveformValueType:
-          parsed.waveformValueType === 'int' ? 'int' : 'float',
         textZoom: clampTextZoom(parsed.textZoom ?? defaultAppSettings.textZoom),
         plotter: normalizePlotter(parsed.plotter),
         txFileLineDelayMs: clampTxFileLineDelayMs(
@@ -162,7 +158,6 @@ export function patchAppSettings(patch: Partial<AppSettingsFile>) {
     version: APP_SETTINGS_VERSION,
     theme: patch.theme ?? current.theme,
     captureBufferMax: patch.captureBufferMax ?? current.captureBufferMax,
-    waveformValueType: patch.waveformValueType ?? current.waveformValueType,
     textZoom: patch.textZoom != null ? clampTextZoom(patch.textZoom) : current.textZoom,
     plotter: patch.plotter ? normalizePlotter(patch.plotter) : current.plotter,
     txFileLineDelayMs:
@@ -185,7 +180,6 @@ export function patchAppSettings(patch: Partial<AppSettingsFile>) {
 export function persistFromStore(state: {
   theme: ThemeMode
   captureBufferMax: number
-  waveformValueType: WaveformValueType
   textZoom: number
   plotterSettings: PlotterSettings
   txFileLineDelayMs: number
@@ -196,7 +190,6 @@ export function persistFromStore(state: {
     version: APP_SETTINGS_VERSION,
     theme: state.theme,
     captureBufferMax: clampBufferMax(state.captureBufferMax),
-    waveformValueType: state.waveformValueType,
     textZoom: clampTextZoom(state.textZoom),
     plotter: normalizePlotter(state.plotterSettings),
     txFileLineDelayMs: clampTxFileLineDelayMs(state.txFileLineDelayMs),

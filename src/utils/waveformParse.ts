@@ -1,10 +1,10 @@
 import type { WaveformValueType } from '../types/serial'
 
-function parseNumbersFromText(text: string, type: WaveformValueType): number[] {
+function parseNumbersFromText(_type: WaveformValueType, text: string): number[] {
   const values: number[] = []
   const tokens = text.split(/[\s,;]+/).filter(Boolean)
   for (const token of tokens) {
-    const v = type === 'float' ? parseFloat(token) : parseInt(token, 10)
+    const v = parseFloat(token)
     if (!Number.isNaN(v) && Number.isFinite(v)) values.push(v)
   }
   return values
@@ -23,7 +23,7 @@ export class WaveformLineParser {
     if (!text.includes('\n') && !text.includes('\r')) {
       const token = text.trim()
       if (token && SINGLE_NUMBER.test(token)) {
-        const parsed = parseNumbersFromText(token, type)
+        const parsed = parseNumbersFromText(type, token)
         if (parsed.length === 1) return parsed
       }
     }
@@ -34,12 +34,12 @@ export class WaveformLineParser {
       const line = this.buffer.slice(0, idx).trim()
       this.buffer = this.buffer.slice(idx + (this.buffer[idx] === '\r' ? 2 : 1))
       if (!line) continue
-      values.push(...parseNumbersFromText(line, type))
+      values.push(...parseNumbersFromText(type, line))
     }
 
     if (/[ \t,;]$/.test(this.buffer)) {
       const part = this.buffer.trimEnd()
-      if (part) values.push(...parseNumbersFromText(part, type))
+      if (part) values.push(...parseNumbersFromText(type, part))
       this.buffer = ''
     }
 
@@ -51,12 +51,12 @@ export class WaveformLineParser {
   }
 }
 
-/** Parses fixed-width binary samples (int16 LE or float32 LE) from the serial stream. */
+/** Parses fixed-width binary samples (64-bit IEEE-754 double, little-endian). */
 export class WaveformBinaryParser {
   private remainder = new Uint8Array(0)
 
-  feed(chunk: Uint8Array, type: WaveformValueType): number[] {
-    const bytesPerSample = type === 'float' ? 4 : 2
+  feed(chunk: Uint8Array, _type: WaveformValueType): number[] {
+    const bytesPerSample = 8
     const merged = new Uint8Array(this.remainder.length + chunk.length)
     merged.set(this.remainder)
     merged.set(chunk, this.remainder.length)
@@ -66,12 +66,8 @@ export class WaveformBinaryParser {
     const view = new DataView(merged.buffer, merged.byteOffset, complete)
 
     for (let i = 0; i < complete; i += bytesPerSample) {
-      if (type === 'float') {
-        const v = view.getFloat32(i, true)
-        if (Number.isFinite(v)) values.push(v)
-      } else {
-        values.push(view.getInt16(i, true))
-      }
+      const v = view.getFloat64(i, true)
+      if (Number.isFinite(v)) values.push(v)
     }
 
     this.remainder = merged.slice(complete)
