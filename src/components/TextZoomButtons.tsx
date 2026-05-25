@@ -40,7 +40,7 @@ export function TextZoomButtons() {
 
       <button
         type="button"
-        className="wb-toolbar-btn inline-flex min-w-[3.25rem] items-center justify-center gap-0.5 px-1.5 font-mono text-[10px] tabular-nums"
+        className="wb-toolbar-btn inline-flex min-w-[3.25rem] items-center justify-center gap-0.5 px-1.5 font-mono text-[0.75rem] tabular-nums"
         onClick={() => setPanelOpen((o) => !o)}
         aria-expanded={panelOpen}
         aria-haspopup="listbox"

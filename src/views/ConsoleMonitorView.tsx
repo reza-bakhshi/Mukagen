@@ -11,6 +11,7 @@ import {
   SlidersHorizontal,
   Type,
 } from 'lucide-react'
+import { BUFFER_MAX, BUFFER_MIN } from '../utils/appSettings'
 import { HexdumpIcon } from '../components/HexdumpIcon'
 import { HexIcon } from '../components/HexIcon'
 import { SegmentedControl } from '../components/SegmentedControl'
@@ -113,6 +114,24 @@ export function ConsoleMonitorView({ onTransmit, connected }: ConsoleMonitorView
             Filters
           </button>
           <TextZoomButtons />
+          <div className="shell-size-box">
+            <span className="shell-size-title">Buffer</span>
+            <label className="shell-size-field">
+              <input
+                type="number"
+                min={BUFFER_MIN}
+                max={BUFFER_MAX}
+                step={500}
+                value={store.captureBufferMax}
+                onChange={(e) => {
+                  const max = Number(e.target.value)
+                  store.setCaptureBufferMax(Number.isFinite(max) ? max : BUFFER_MIN)
+                }}
+                className="shell-size-input tabular-nums"
+              />
+            </label>
+            <span className="shell-size-unit">lines</span>
+          </div>
         </div>
 
         {filtersOpen && (
