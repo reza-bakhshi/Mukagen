@@ -5,7 +5,6 @@ import {
   Monitor,
   PanelLeftClose,
   PanelLeftOpen,
-  Settings,
   Terminal,
 } from 'lucide-react'
 import { GitHubIcon } from '../components/GitHubIcon'
@@ -23,8 +22,7 @@ const MAIN_NAV: { id: WorkbenchView; label: string; icon: typeof Monitor }[] = [
   { id: 'plotter', label: 'Plotter', icon: LineChart },
 ]
 
-const UTIL_NAV: { id: WorkbenchView; label: string; icon: typeof Settings }[] = [
-  { id: 'settings', label: 'Settings', icon: Settings },
+const UTIL_NAV: { id: WorkbenchView; label: string; icon: typeof Info }[] = [
   { id: 'about', label: 'About', icon: Info },
 ]
 

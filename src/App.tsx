@@ -11,7 +11,6 @@ import { WaveformBinaryParser, WaveformLineParser } from './utils/waveformParse'
 import { ConsoleMonitorView } from './views/ConsoleMonitorView'
 import { InteractiveShellView } from './views/InteractiveShellView'
 import { AboutView } from './views/AboutView'
-import { SettingsView } from './views/SettingsView'
 import { PlotterView } from './views/PlotterView'
 
 export default function App() {
@@ -137,7 +136,6 @@ export default function App() {
               <ConsoleMonitorView onTransmit={handleTransmit} connected={connected} />
             )}
             {workbenchView === 'plotter' && <PlotterView />}
-            {workbenchView === 'settings' && <SettingsView />}
             {workbenchView === 'about' && <AboutView />}
           </div>
         </div>
