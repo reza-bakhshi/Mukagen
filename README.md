@@ -20,6 +20,22 @@
   <img src="assets/image2.png" alt="Connecting to the device" width="800">
 </p>
 
+---
+
+### Try Mukagen — Live Demo
+
+<p align="center">
+  <a href="https://reza-bakhshi.github.io/Mukagen/" target="_blank">
+    <img src="https://img.shields.io/badge/View%20Live%20Demo-00ADEF?style=for-the-badge&logo=github&logoColor=white" alt="Mukagen" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://reza-bakhshi.github.io/Mukagen/" target="_blank" style="text-decoration:none;font-weight:600">Open Mukagen →</a>
+</p>
+
+---
+
 ## 📑 Table of Contents
 
 - [Getting Started](#-getting-started)
@@ -34,14 +50,14 @@
 
 ---
 
+## Installation & Build
+
 ## 🏁 Getting Started
 
 ### Prerequisites
 
 - A modern browser that supports the [Web Serial API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API) (Google Chrome, Microsoft Edge, or Opera).
 - **Node.js** (for local development).
-
-### Installation & Build
 
 ```bash
 # 1. Clone the repository
