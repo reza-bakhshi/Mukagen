@@ -35,11 +35,26 @@ The browser uses your operating system's serial device support. A USB-to-serial 
 
 The current plotter consumes a single sample stream. Multiple values on a line become successive samples, rather than separate named channels. JSON objects are not a supported telemetry format. See [waveformParse.ts](src/utils/waveformParse.ts).
 
-For example, an Arduino device can send a numeric reading with:
+### Try the plotter with an Arduino-compatible board
+
+Flash this sketch to send a repeating 0–19 ramp at ten samples per second. It needs no external sensor.
 
 ```cpp
-Serial.println(23.5);
+void setup() {
+  Serial.begin(115200);
+}
+
+void loop() {
+  static unsigned int sample = 0;
+  Serial.println(sample);
+  sample = (sample + 1) % 20;
+  delay(100);
+}
 ```
+
+1. Close any serial monitor using the port, then connect to the board in Mukagen at 115200 baud.
+2. Open **Plotter**, select **ASCII** in the plotter settings, and click **Start**.
+3. The chart should ramp from 0 to 19 and drop back to 0 about every two seconds.
 
 ## Send commands and capture data
 
